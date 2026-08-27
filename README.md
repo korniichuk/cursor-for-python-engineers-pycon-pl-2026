@@ -482,9 +482,8 @@ Stop with `Ctrl+C` in your Cursor terminal when you are done.
 
 #### Option B. Connect the server to Cursor
 
-1. Create `.cursor/mcp.json` in the project root.
-2. Paste the configuration below and replace the two paths with your absolute paths.
-3. Save the file, then reload Cursor or reload MCP servers in **Settings → Tools & MCP**.
+**Step 1:** Create `.cursor/mcp.json` in the project root.  
+**Step 2:** Paste the configuration below and replace the two paths with your absolute paths.  
 
 **Windows:**
 
@@ -522,23 +521,15 @@ Stop with `Ctrl+C` in your Cursor terminal when you are done.
 }
 ```
 
-Open Cursor Agent and ask:
+**Step 3:** Save the file, then enable the MCP server in the `Settings > Customize > MCPs`.
+
+**Step 4:** Open Cursor Agent and ask:
 
 ```text
-Use the stocks MCP server and call the ping tool.
+Use the stocks MCP server and call the get_company_info tool for AAPL.
 ```
 
-Expected response:
-
-```text
-stocks MCP server is alive
-```
-
-If Cursor cannot connect, run this in a terminal first:
-
-```bash
-python stocks_server.py
-```
+![0007.png](img/0007.png "Cursor Agent expected response")
 
 ## Part 4: Cursor Best Practices
 
