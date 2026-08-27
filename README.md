@@ -25,7 +25,7 @@
         - [Diagnose a failure](#diagnose-a-failure)
 - [**Part 3:** Practical Exercise - Building an MCP Server](#part-3-practical-exercise---building-an-mcp-server)
     - [Understanding MCP](#understanding-mcp)  
-        - [The Three Primitives of MCP](#the-three-primitives-of-mcp)
+        - [The three primitives of MCP](#the-three-primitives-of-mcp)  
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
 - [**Part 4:** Cursor Workflows & Best Practices](#part-4-cursor-workflows--best-practices)  
@@ -221,7 +221,7 @@ Review the proposed local change. Emphasize that the selection acts as a boundar
 
 Start a small helper stub:
 
-```python
+```python3
 def normalize_ticker(ticker: str) -> str:
 ```
 
@@ -229,7 +229,7 @@ def normalize_ticker(ticker: str) -> str:
 
 Accept or reject Tab suggestions only after checking that they meet the desired contract. A reasonable final form is:
 
-```python
+```python3
 def normalize_ticker(ticker: str) -> str:
     """Normalize the ticker symbol to uppercase."""
     return ticker.upper()
@@ -254,7 +254,7 @@ For our hands-on practice, we will build a Model Context Protocol (MCP) server u
 * MCP connects AI applications (e.g., Cursor, Google Antigravity) to data sources, tools, and workflows.
 * The architecture consists of an MCP Host (the AI application), an MCP Client (maintains the connection), and an MCP Server (which provides context to the clients).
 
-#### The Three Primitives of MCP
+#### The three primitives of MCP
 
 * **Resources:** "Here is some data." Read-only context (e.g., file contents, database records, API responses).
 * **Prompts:** "Here is how to ask." Reusable templates that help structure interactions with language models (e.g., system prompts, few-shot examples).
@@ -262,17 +262,14 @@ For our hands-on practice, we will build a Model Context Protocol (MCP) server u
 
 ### Building with FastMCP
 
-FastMCP is the standard framework for building MCP applications. It acts as the "FastAPI of the MCP ecosystem".
+[FastMCP]((https://gofastmcp.com/)) is the standard framework for building MCP applications. It acts as the "FastAPI of the MCP ecosystem".
 
 * It is declarative and Pythonic.
-
-
 * It relies on standard Python type hints (like `int`, `str`, and Pydantic models).
-
-
 * It requires zero boilerplate, featuring automatic JSON schema generation and auto-discovery.
 
-**Step 1: The Minimal Server**
+#### Task 4: The minimal server
+
 Using Cursor's Composer, ask it to create a file named `stocks_server_min.py` with the following code:
 
 ```python3
@@ -280,19 +277,166 @@ from fastmcp import FastMCP
 
 mcp = FastMCP("stocks")
 
+
 @mcp.tool
 def ping() -> str:
     """Return a simple health-check message."""
     return "stocks MCP server is alive"
 
+
 if __name__ == "__main__":
     mcp.run()
-
 ```
 
-*Run the server by typing `python stocks_server_min.py` in the Cursor terminal*.
+Run the server by typing `python stocks_server_min.py` in the Cursor terminal:
 
-**Step 2: Extending the Server**
+![0005.png](img/0005.png "FastMCP")
+
+The server runs silently on stdio, waiting for an MCP client. Press `Ctrl+C` to stop it.
+
+#### Task 5: Extending the Server
+
+Now create the full server. Create a [stocks_server.py](stocks_server.py) file:
+
+```python3
+"""Stock market MCP server built with FastMCP and yfinance."""
+
+import os
+
+import yfinance as yf
+from fastmcp import FastMCP
+
+mcp = FastMCP("stocks")
+
+WATCHLIST = ["AAPL", "MSFT", "GOOGL", "NVDA", "TSLA"]
+```
+
+**Tool 1:** `get_company_info`
+
+```python3
+@mcp.tool
+def get_company_info(ticker: str) -> dict:
+    """Return basic company information for the given ticker symbol."""
+    info = yf.Ticker(ticker).info
+    return {
+        "ticker": ticker.upper(),
+        "name": info.get("longName") or info.get("shortName"),
+        "sector": info.get("sector"),
+        "industry": info.get("industry"),
+        "country": info.get("country"),
+        "website": info.get("website"),
+        "market_cap": info.get("marketCap"),
+        "summary": info.get("longBusinessSummary"),
+    }
+```
+
+FastMCP reads the type hints and docstring to generate the tool's JSON schema automatically. Keep return values JSON-serializable (dicts, lists, strings, numbers, booleans).
+
+**Tool 2:** `get_stock_price`
+
+```python3
+@mcp.tool
+def get_stock_price(ticker: str) -> dict:
+    """Return the latest available stock price and currency for the ticker."""
+    t = yf.Ticker(ticker)
+    fast = t.fast_info
+    return {
+        "ticker": ticker.upper(),
+        "price": float(fast["last_price"]),
+        "currency": fast.get("currency"),
+        "previous_close": float(fast.get("previous_close")),
+    }
+```
+
+`fast_info` is a lightweight yfinance endpoint that is fast enough for an interactive agent call.
+
+**Tool 3:** `get_stock_history`
+
+```python3
+@mcp.tool
+def get_stock_history(ticker: str, days: int = 7) -> list[dict]:
+    """Return daily OHLCV history for the last N days (default 7)."""
+    period = f"{max(1, int(days))}d"
+    df = yf.Ticker(ticker).history(period=period)
+    df = df.reset_index()
+    return [
+        {
+            "date": row["Date"].strftime("%Y-%m-%d"),
+            "open": float(row["Open"]),
+            "high": float(row["High"]),
+            "low": float(row["Low"]),
+            "close": float(row["Close"]),
+            "volume": int(row["Volume"]),
+        }
+        for _, row in df.iterrows()
+    ]
+```
+
+Default parameter values are exposed to the agent as optional arguments.
+
+### Static resource: `stocks://watchlist`
+
+```python3
+@mcp.resource("stocks://watchlist")
+def watchlist() -> list[str]:
+    """Return the default watchlist of ticker symbols."""
+    return WATCHLIST
+```
+
+Resources are **read-only context**: the agent loads them when it needs background data, not as an action.
+
+### Resource template: `stocks://{ticker}/summary`
+
+```python3
+@mcp.resource("stocks://{ticker}/summary")
+def ticker_summary(ticker: str) -> dict:
+    """Return a short summary (name, sector, latest price) for a ticker."""
+    info = get_company_info(ticker)
+    price = get_stock_price(ticker)
+    return {
+        "ticker": ticker.upper(),
+        "name": info["name"],
+        "sector": info["sector"],
+        "price": price["price"],
+        "currency": price["currency"],
+    }
+```
+
+The `{ticker}` placeholder turns this into a **resource template** the agent can parameterize.
+
+### Prompt template: `analyze_stock`
+
+```python3
+@mcp.prompt
+def analyze_stock(ticker: str) -> str:
+    """Reusable prompt template that asks the agent to analyze a stock."""
+    return (
+        f"Analyze the stock {ticker.upper()}.\n\n"
+        "Use the MCP tools to gather:\n"
+        "1. Company information (get_company_info)\n"
+        "2. Current price (get_stock_price)\n"
+        "3. 30-day price history (get_stock_history with days=30)\n\n"
+        "Then write a concise report covering: business overview, recent "
+        "price trend, and one risk and one opportunity for an investor."
+    )
+```
+
+Prompts are reusable templates the user (or agent) can invoke. They are ideal for multi-tool workflows you want to standardize.
+
+### Transport switch
+
+End the file with a `__main__` block that lets you pick the transport at runtime:
+
+```python3
+if __name__ == "__main__":
+    transport = os.getenv("MCP_TRANSPORT", "stdio").lower()
+    if transport == "http":
+        mcp.run(transport="http", host="127.0.0.1", port=8000)
+    else:
+        mcp.run()
+```
+
+You now have a complete MCP server: **3 tools, 1 static resource, 1 resource template, 1 prompt**.
 Now, use Cursor's Chat + Apply to expand our server into a robust stock analysis tool. Create `stocks_server.py` using the `yfinance` library:
 
 ```python3
