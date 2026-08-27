@@ -13,7 +13,7 @@
     - [What is Cursor?](#what-is-cursor)  
     - [Ownership](#ownership)  
     - [How to Download and Install Cursor](#how-to-download-and-install-cursor)  
-    - [How to Update Cursor IDE](#how-to-update-cursor-ide)  
+    - [How to Update Cursor](#how-to-update-cursor)  
     - [Promotions, Trials, and Discounts](#promotions-trials-and-discounts)  
     - [Community and Resources](#community-and-resources)  
 - [**Part 2:** Practical Exercise - Building an MCP Server](#part-2-practical-exercise---building-an-mcp-server)
@@ -95,15 +95,22 @@ Cursor is cross-platform. To install:
     - **Windows**: Run the installer and follow the on-screen prompts,
     - **macOS**: Drag Cursor into your `Applications` folder,
     - **Linux**: Install via your package manager (`apt` or `dnf`) if available, or extract the `AppImage/archive` and run it.
-4. Open `Cursor` from your applications menu or desktop
-5. Sign in with your [Cursor account](https://cursor.com/dashboard) when prompted
+4. Open `Cursor` from your applications menu or desktop.
+5. Sign in with your [Cursor account](https://cursor.com/dashboard) when prompted.
 6. On first launch, you will be prompted to optionally import your [VS Code](https://code.visualstudio.com/) settings and extensions.
 
-### How to Update Cursor IDE
+### How to Update Cursor
 
 Keeping your IDE updated ensures you have the latest AI models and bug fixes.
 
-* **Windows Desktop Interface:** Navigate to the top menu bar, click on `Help`, and select `Check for Updates…`. Cursor will download and apply any available updates.
+1. Open Cursor.
+2. Navigate to the top menu bar.
+3. Click on `Help`, and select `Check for Updates…`:
+
+    ![0002.png](img/0002.png "Help > Check for Updates…")    
+
+4. Cursor will download and apply any available updates.
+5. Select **Restart to Update** when Cursor is ready.
 
 ### Promotions, Trials, and Discounts
 
