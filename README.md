@@ -28,7 +28,8 @@
         - [The three primitives of MCP](#the-three-primitives-of-mcp)  
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
-- [**Part 4:** Cursor Workflows & Best Practices](#part-4-cursor-workflows--best-practices)  
+        - [Option A. Local stdio with MCP Inspector](#option-a-local-stdio-with-mcp-inspector)
+- [**Part 4:** Cursor Best Practices](#part-4-cursor-best-practices)  
     - [Weak vs Strong Prompts](#weak-vs-strong-prompts)
     - [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
 
@@ -294,7 +295,7 @@ Run the server by typing `python stocks_server_min.py` in the Cursor terminal:
 
 The server runs silently on stdio, waiting for an MCP client. Press `Ctrl+C` to stop it.
 
-#### Task 5: Extending the Server
+#### Task 5: Extending the server
 
 Now create the full server. Create a [stocks_server.py](stocks_server.py) file:
 
@@ -374,7 +375,7 @@ def get_stock_history(ticker: str, days: int = 7) -> list[dict]:
 
 Default parameter values are exposed to the agent as optional arguments.
 
-### Static resource: `stocks://watchlist`
+**Static resource:** `stocks://watchlist`
 
 ```python3
 @mcp.resource("stocks://watchlist")
@@ -385,7 +386,7 @@ def watchlist() -> list[str]:
 
 Resources are **read-only context**: the agent loads them when it needs background data, not as an action.
 
-### Resource template: `stocks://{ticker}/summary`
+**Resource template:** `stocks://{ticker}/summary`
 
 ```python3
 @mcp.resource("stocks://{ticker}/summary")
@@ -404,7 +405,7 @@ def ticker_summary(ticker: str) -> dict:
 
 The `{ticker}` placeholder turns this into a **resource template** the agent can parameterize.
 
-### Prompt template: `analyze_stock`
+**Prompt template:** `analyze_stock`
 
 ```python3
 @mcp.prompt
@@ -423,7 +424,7 @@ def analyze_stock(ticker: str) -> str:
 
 Prompts are reusable templates the user (or agent) can invoke. They are ideal for multi-tool workflows you want to standardize.
 
-### Transport switch
+**Transport switch**
 
 End the file with a `__main__` block that lets you pick the transport at runtime:
 
@@ -437,80 +438,54 @@ if __name__ == "__main__":
 ```
 
 You now have a complete MCP server: **3 tools, 1 static resource, 1 resource template, 1 prompt**.
-Now, use Cursor's Chat + Apply to expand our server into a robust stock analysis tool. Create `stocks_server.py` using the `yfinance` library:
-
-```python3
-"""Stock market MCP server built with FastMCP and yfinance."""
-import os
-import yfinance as yf
-from fastmcp import FastMCP
-
-mcp = FastMCP("stocks")
-WATCHLIST = ["AAPL", "MSFT", "GOOGL", "NVDA", "TSLA"]
-
-# Tool 1: get_company_info
-@mcp.tool
-def get_company_info(ticker: str) -> dict:
-    """Return basic company information for the given ticker symbol."""
-    info = yf.Ticker(ticker).info
-    return {
-        "ticker": ticker.upper(),
-        "name": info.get("longName") or info.get("shortName"),
-        "sector": info.get("sector"),
-        "industry": info.get("industry"),
-        "country": info.get("country"),
-        "website": info.get("website"),
-        "market_cap": info.get("marketCap"),
-        "summary": info.get("longBusinessSummary"),
-    }
-
-# Tool 2: get_stock_price
-@mcp.tool
-def get_stock_price(ticker: str) -> dict:
-    """Return the latest available stock price and currency for the ticker."""
-    t = yf.Ticker(ticker)
-    fast = t.fast_info
-    return {
-        "ticker": ticker.upper(),
-        "price": float(fast["last_price"]),
-        "currency": fast.get("currency"),
-        "previous_close": float(fast.get("previous_close")),
-    }
-
-# Static resource: stocks://watchlist
-@mcp.resource("stocks://watchlist")
-def watchlist() -> list[str]:
-    """Return the default watchlist of ticker symbols."""
-    return WATCHLIST
-
-if __name__ == "__main__":
-    transport = os.getenv("MCP_TRANSPORT", "stdio").lower()
-    if transport == "http":
-        mcp.run(transport="http", host="127.0.0.1", port=8000)
-    else:
-        mcp.run()
-
-```
 
 ### Testing the Server
 
-You can inspect the server locally using the MCP Inspector shipped with FastMCP.
+#### Option A. Local stdio with MCP Inspector
 
-* Run the command: `fastmcp dev inspector stocks_server.py`.
+Download the Windows installer (e.g., `node-v24.15.0-x64.msi` file) from [nodejs.org](https://nodejs.org/en) (LTS, such as Node v24.15.0).
 
+Run it with the default options — it adds node, npm, and npx to your `PATH`.
 
-* This command starts your server on stdio and launches the MCP Inspector in your web browser.
+**Close and reopen Cursor** (PATH changes are not picked up in existing shells).
 
+Verify:
 
-* Inside the Inspector, you can list your tools, call `get_stock_price` with `ticker="AAPL"`, and view the JSON response.
+```sh
+node --version
+npm --version
+npx --version
+```
 
-## Part 4: Cursor Workflows & Best Practices
+The fastest way to inspect the server is with the [MCP Inspector](https://github.com/modelcontextprotocol/inspector) shipped with FastMCP:
+
+```sh
+fastmcp dev inspector stocks_server.py
+```
+
+This command:
+
+1. Starts your server on stdio.
+2. Launches MCP Inspector in your browser.
+
+In the Inspector you can:
+
+- List tools, resources, and prompts that your server advertises.
+- Call `get_stock_price` with `ticker="AAPL"` and see the response.
+- Read the `stocks://watchlist` resource.
+- Render the `analyze_stock` prompt with `ticker="MSFT"`.
+
+![0006.png](img/0006.png "MCP Inspector tools tab")
+
+Stop with `Ctrl+C` in your Cursor terminal when you are done.
+
+## Part 4: Cursor Best Practices
 
 During the live refactor of our `stocks_server.py`, practice these Cursor commands:
 
-1. **Code Search (Ctrl/Cmd + Enter):** Ask Cursor "Where is the watchlist defined?" to instantly jump to the `WATCHLIST` variable.
-2. **Inline Editor (Ctrl/Cmd + K):** Highlight the `get_stock_price` function and prompt: *"Add error handling if the ticker is invalid."*
-3. **Composer (Ctrl/Cmd + I):** Prompt: *"Create a new file called `test_stocks.py` and write pytest functions for all the tools in `stocks_server.py`."*
+1. **Code Search:** Ask Cursor *"Where is the watchlist defined?"* to instantly jump to the `WATCHLIST` variable.
+2. **Inline Editor:** Highlight the `get_stock_price` function and prompt: *"Add error handling if the ticker is invalid."*
+3. **Composer:** Prompt: *"Create a new file called `test_stocks.py` and write pytest functions for all the tools in `stocks_server.py`."*
 
 ### Weak vs Strong Prompts
 
@@ -524,9 +499,9 @@ During the live refactor of our `stocks_server.py`, practice these Cursor comman
 
 To prevent Cursor from acting unpredictably, follow this prompt engineering checklist:
 
-* [ ] **Provide Context:** Always tag relevant files using `@` (e.g., `@stocks_server.py`) so the LLM isn't guessing.
-* [ ] **Be Specific:** Instead of *"fix the bug,"* use *"the get_stock_price tool throws a KeyError on line 34 when querying a delisted stock. Please handle this by returning None."*
-* [ ] **Iterate Small:** Don't ask Composer to build an entire application in one prompt. Build the data models first, verify them, and then move to the API logic.
-* [ ] **Review Diffs Carefully:** Treat AI-generated code like a Pull Request from a junior developer. Always read the diff before clicking "Apply."
+* ☐ **Provide Context:** Always tag relevant files using `@` (e.g., `@stocks_server.py`) so the LLM isn't guessing.
+* ☐ **Be Specific:** Instead of *"fix the bug,"* use *"the get_stock_price tool throws a KeyError on line 34 when querying a delisted stock. Please handle this by returning None."*
+* ☐ **Iterate Small:** Don't ask Composer to build an entire application in one prompt. Build the data models first, verify them, and then move to the API logic.
+* ☐ **Review Diffs Carefully:** Treat AI-generated code like a Pull Request from a junior developer. Always read the diff before clicking "Apply."
 
 ---
