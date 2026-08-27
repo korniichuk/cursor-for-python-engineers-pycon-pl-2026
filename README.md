@@ -2,11 +2,13 @@
 
 **Duration:** 1h 40 minutes  
 **Audience:** Python Engineers  
-**IDE Version:** Cursor Agentic Windows Desktop IDE ver. `3.17.21`
+**IDE Version:** Cursor Agentic Windows Desktop IDE ver. `3.17.21`  
+**Practice project:** A Python Model Context Protocol (MCP) server built with [FastMCP Python library](https://gofastmcp.com/)
 
 ## Table of contents
 
 - [Workshop Overview](#workshop-overview)  
+- [Participant prerequisites](#participant-prerequisites) 
 - [**Part 1:** Introduction to Cursor](#part-1-introduction-to-cursor)  
     - [What is Cursor?](#what-is-cursor)  
     - [Ownership](#ownership)  
@@ -23,14 +25,27 @@
 
 ## Workshop Overview
 
-Cursor (by Anysphere) can feel like magic—until it doesn’t. In this beginner-friendly, hands-on workshop, you’ll learn a practical workflow for building and changing real Python code with Cursor without getting lost. We will cover:
+Cursor (by Anysphere/SpaceX) can feel like magic - until it doesn't. In this beginner-friendly, hands-on workshop, you'll learn a practical workflow for building and changing real Python code with Cursor without getting lost.
 
-* Planning small tasks and generating multi-file changes with Composer.
+This workshop teaches a repeatable, safe workflow for using Cursor to plan, implement, inspect, refactor, and debug real Python changes. We will cover:
+
+* Planning small tasks and generating multi-file changes with Cursor Composer feature.
 * Iterating safely using Chat + Apply diffs.
 * Navigating quickly with code search.
 * Speeding up everyday edits with inline completion and the inline editor.
 
-We’ll finish with a guided refactor, a debugging pass on a small Python project, and a short checklist for avoiding common pitfalls like vague prompts and missing context.
+## Participant prerequisites
+
+Participants should bring:
+
+- A laptop with Windows 11, macOS, or a supported Linux distribution (e.g., [Ubuntu](https://ubuntu.com/)).
+- [Cursor](https://cursor.com/download) installed and signed in.
+- [Python](https://www.python.org/downloads/) 3.11 or later available in a terminal.
+- Git installed (e.g., [Git Bash for Windows](https://git-scm.com/install/windows)).
+- [Node.js](https://nodejs.org/en) 18+.
+- A working internet connection for package installation and finance market-data requests.
+
+No prior experience with Cursor, MCP, FastMCP, or AI-assisted coding is required. Basic Python functions, imports, and terminal commands are helpful.
 
 ## Part 1: Introduction to Cursor
 
