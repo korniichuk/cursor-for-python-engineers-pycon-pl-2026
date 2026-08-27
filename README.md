@@ -29,6 +29,7 @@
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
         - [Option A. Local stdio with MCP Inspector](#option-a-local-stdio-with-mcp-inspector)
+        - [Option B. Connect the server to Cursor](#option-b-connect-the-server-to-cursor)
 - [**Part 4:** Cursor Best Practices](#part-4-cursor-best-practices)  
     - [Weak vs Strong Prompts](#weak-vs-strong-prompts)
     - [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
@@ -478,6 +479,66 @@ In the Inspector you can:
 ![0006.png](img/0006.png "MCP Inspector tools tab")
 
 Stop with `Ctrl+C` in your Cursor terminal when you are done.
+
+#### Option B. Connect the server to Cursor
+
+1. Create `.cursor/mcp.json` in the project root.
+2. Paste the configuration below and replace the two paths with your absolute paths.
+3. Save the file, then reload Cursor or reload MCP servers in **Settings → Tools & MCP**.
+
+**Windows:**
+
+```json
+{
+  "mcpServers": {
+    "stocks": {
+      "command": "python",
+      "args": [
+        "C:\\Users\\<YOUR_USERNAME>\\Documents\\agentic-ai-in-practice-dawts-2026\\stocks_server.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
+```
+
+**macOS/Linux:**
+
+```json
+{
+  "mcpServers": {
+    "stocks": {
+      "command": "python3",
+      "args": [
+        "/<ABSOLUTE>/<PATH>/<TO>/agentic-ai-in-practice-dawts-2026/stocks_server.py"
+      ],
+      "env": {
+        "MCP_TRANSPORT": "stdio"
+      }
+    }
+  }
+}
+```
+
+Open Cursor Agent and ask:
+
+```text
+Use the stocks MCP server and call the ping tool.
+```
+
+Expected response:
+
+```text
+stocks MCP server is alive
+```
+
+If Cursor cannot connect, run this in a terminal first:
+
+```bash
+python stocks_server.py
+```
 
 ## Part 4: Cursor Best Practices
 
