@@ -1,15 +1,7 @@
-# cursor-for-python-engineers-pycon-pl-2026
-Cursor for Python Engineers: A Hands-On Workshop
-
-Here are the comprehensive materials for your workshop. They are formatted as a single, easily readable Markdown file that you can directly commit to your GitHub repository.
-
----
-
 # Cursor for Python Engineers: A Hands-On Workshop
-
 **Duration:** 1h 40 minutes
 
-**Audience:** Beginner Python Developers
+**Audience:** Python Engineers
 
 **IDE Version:** Cursor Agentic Windows Desktop IDE v3.17.21
 
@@ -63,7 +55,7 @@ Cursor is an AI-first IDE built as a fork of VS Code. It integrates advanced Lar
 
 ### Ownership
 
-Cursor is developed and owned by **Anysphere**, an AI research startup backed by prominent investors including OpenAI Startup Fund and Andreessen Horowitz (a16z).
+Cursor is developed by **Anysphere**, an AI research startup backed by prominent investors including OpenAI Startup Fund and Andreessen Horowitz (a16z). SpaceX officially completed its $60 billion all-stock acquisition of Cursor (parent company Anysphere) on August 14, 2026 ([source](https://cursor.com/blog/joining-spacex)).
 
 ### How to Download and Install Cursor
 
