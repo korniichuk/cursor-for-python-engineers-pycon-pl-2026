@@ -85,10 +85,15 @@ Cursor is cross-platform. To install:
 
 1. Navigate to the official website at [cursor.com/download](https://cursor.com/download).
 2. Download the appropriate installer for your operating system (e.g., Windows `.exe`, macOS `.dmg`, or Linux).
-3. Open the downloaded file.
+
+For Windows operating system, you can check your system type (`x64` vs `ARM64`) in the `Settings > System > About`:
+
+![0001.png](img/0001.png "Settings > System > About > System type")
+
+3. Find the downloaded file (e.g., `CursorSetup-x64-3.17.21.exe`).
 4. Follow the install steps for your OS:
-    - **macOS**: Drag Cursor into your `Applications` folder,
     - **Windows**: Run the installer and follow the on-screen prompts,
+    - **macOS**: Drag Cursor into your `Applications` folder,
     - **Linux**: Install via your package manager (`apt` or `dnf`) if available, or extract the `AppImage/archive` and run it.
 4. Open `Cursor` from your applications menu or desktop
 5. Sign in with your [Cursor account](https://cursor.com/dashboard) when prompted
