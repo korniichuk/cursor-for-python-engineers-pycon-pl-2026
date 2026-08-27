@@ -32,8 +32,6 @@ Cursor (by Anysphere) can feel like magic—until it doesn’t. In this beginner
 
 We’ll finish with a guided refactor, a debugging pass on a small Python project, and a short checklist for avoiding common pitfalls like vague prompts and missing context.
 
----
-
 ## Part 1: Introduction to Cursor
 
 ### What is Cursor?
@@ -82,8 +80,6 @@ Keeping your IDE updated ensures you have the latest AI models and bug fixes.
 * **Cursor Ambassador Program:** Passionate about Cursor? Apply to become an ambassador and help grow the community: [https://cursor.com/ambassadors](https://cursor.com/ambassadors)
 * **Community Forum:** The official place to report bugs, request features, and discuss workflows with other developers: [https://forum.cursor.com/](https://forum.cursor.com/)
 
----
-
 ## Part 2: Practical Exercise - Building an MCP Server
 
 For our hands-on practice, we will build a Model Context Protocol (MCP) server using Python. This section utilizes concepts from the presentation "ruslan_korniichuk_-_mcp_20260720.pdf".
@@ -101,8 +97,6 @@ For our hands-on practice, we will build a Model Context Protocol (MCP) server u
 
 * The architecture consists of an MCP Host (the AI application), an MCP Client (which maintains the connection), and an MCP Server (which provides context to the clients).
 
-
-
 **The Three Primitives of MCP:**
 
 * **Resources:** Read-only context, such as file contents or database records ("Here is some data").
@@ -112,8 +106,6 @@ For our hands-on practice, we will build a Model Context Protocol (MCP) server u
 
 
 * **Tools:** Executable functions like API calls or database queries ("Take this action").
-
-
 
 ### Building with FastMCP
 
@@ -127,12 +119,10 @@ FastMCP is the standard framework for building MCP applications. It acts as the 
 
 * It requires zero boilerplate, featuring automatic JSON schema generation and auto-discovery.
 
-
-
 **Step 1: The Minimal Server**
 Using Cursor's Composer, ask it to create a file named `stocks_server_min.py` with the following code:
 
-```python
+```python3
 from fastmcp import FastMCP
 
 mcp = FastMCP("stocks")
@@ -152,7 +142,7 @@ if __name__ == "__main__":
 **Step 2: Extending the Server**
 Now, use Cursor's Chat + Apply to expand our server into a robust stock analysis tool. Create `stocks_server.py` using the `yfinance` library:
 
-```python
+```python3
 """Stock market MCP server built with FastMCP and yfinance."""
 import os
 import yfinance as yf
@@ -217,10 +207,6 @@ You can inspect the server locally using the MCP Inspector shipped with FastMCP.
 
 * Inside the Inspector, you can list your tools, call `get_stock_price` with `ticker="AAPL"`, and view the JSON response.
 
-
-
----
-
 ## Part 3: Cursor Workflows & Best Practices
 
 During the live refactor of our `stocks_server.py`, practice these Cursor commands:
@@ -239,5 +225,3 @@ To prevent Cursor from acting unpredictably, follow this prompt engineering chec
 * [ ] **Review Diffs Carefully:** Treat AI-generated code like a Pull Request from a junior developer. Always read the diff before clicking "Apply."
 
 ---
-
-*Do you have any questions about configuring the FastMCP transport layers before we move on to the debugging phase?*
