@@ -70,7 +70,7 @@ Cursor is cross-platform. To install:
 
 Keeping your IDE updated ensures you have the latest AI models and bug fixes.
 
-* **Windows Desktop Interface:** Navigate to the top menu bar, click on `Help`, and select `Check for Updates...`. Cursor will download and apply any available updates.
+* **Windows Desktop Interface:** Navigate to the top menu bar, click on `Help`, and select `Check for Updates…`. Cursor will download and apply any available updates.
 
 ### Promotions, Trials, and Discounts
 
