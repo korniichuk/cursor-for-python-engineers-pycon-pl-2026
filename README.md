@@ -19,7 +19,7 @@
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
 - [**Part 3:** Cursor Workflows & Best Practices](#part-3-cursor-workflows--best-practices)  
-- [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
+    - [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
 
 ## Workshop Overview
 
