@@ -203,7 +203,11 @@ Using only the open file, explain which functions are MCP tools, which are resou
 
 ### Task 2: Inline editor for a narrow change
 
-Select a function docstring and invoke Cursor’s inline edit command. Ask:
+Select a function docstring and invoke Cursor’s inline edit command:
+
+![0003.png](img/0003.png "Quick Edit")
+
+Ask the following:
 
 ```text
 Rewrite this docstring in concise Google-style Python documentation.
