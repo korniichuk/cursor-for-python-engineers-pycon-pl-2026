@@ -1,26 +1,25 @@
 # Cursor for Python Engineers: A Hands-On Workshop
-**Duration:** 1h 40 minutes
 
-**Audience:** Python Engineers
-
-**IDE Version:** Cursor Agentic Windows Desktop IDE v3.17.21
+**Duration:** 1h 40 minutes  
+**Audience:** Python Engineers  
+**IDE Version:** Cursor Agentic Windows Desktop IDE ver. `3.17.21`
 
 ## Table of contents
 
-1. [Workshop Overview](#workshop-overview)
-2. [Part 1: Introduction to Cursor](#part-1-introduction-to-cursor)
-3. [What is Cursor?](#what-is-cursor)
-4. [Ownership](#ownership)
-5. [How to Download and Install Cursor](#how-to-download-and-install-cursor)
-6. [How to Update Cursor IDE](#how-to-update-cursor-ide)
-7. [Promotions, Trials, and Discounts](#promotions-trials-and-discounts)
-8. [Community and Resources](#community-and-resources)
-9. [Part 2: Practical Exercise - Building an MCP Server](#part-2-practical-exercise---building-an-mcp-server)
-10. [Understanding MCP](#understanding-mcp)
-11. [Building with FastMCP](#building-with-fastmcp)
-12. [Testing the Server](#testing-the-server)
-13. [Part 3: Cursor Workflows & Best Practices](#part-3-cursor-workflows--best-practices)
-14. [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
+- [Workshop Overview](#workshop-overview)  
+- [**Part 1:** Introduction to Cursor](#part-1-introduction-to-cursor)  
+    - [What is Cursor?](#what-is-cursor)  
+    - [Ownership](#ownership)  
+    - [How to Download and Install Cursor](#how-to-download-and-install-cursor)  
+    - [How to Update Cursor IDE](#how-to-update-cursor-ide)  
+    - [Promotions, Trials, and Discounts](#promotions-trials-and-discounts)  
+    - [Community and Resources](#community-and-resources)  
+- [**Part 2:** Practical Exercise - Building an MCP Server](#part-2-practical-exercise---building-an-mcp-server)
+    - [Understanding MCP](#understanding-mcp)  
+    - [Building with FastMCP](#building-with-fastmcp)  
+    - [Testing the Server](#testing-the-server)  
+- [**Part 3:** Cursor Workflows & Best Practices](#part-3-cursor-workflows--best-practices)  
+- [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
 
 ## Workshop Overview
 
