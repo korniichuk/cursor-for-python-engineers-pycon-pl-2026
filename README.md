@@ -21,6 +21,7 @@
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
 - [**Part 3:** Cursor Workflows & Best Practices](#part-3-cursor-workflows--best-practices)  
+    - [Weak versus strong requests](#weak-versus-strong-requests)
     - [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
 
 ## Workshop Overview
@@ -114,14 +115,18 @@ Keeping your IDE updated ensures you have the latest AI models and bug fixes.
 
 ### Promotions, Trials, and Discounts
 
-* **Standard Free Tier:** Cursor offers a basic free tier with access to baseline AI autocomplete features.
-* **14-Day Pro Trial:** New users typically receive a 14-day free trial of the Pro tier, which includes premium fast requests to advanced models like Claude 3.5 Sonnet and GPT-4o.
-* *Note: Always check the [Cursor pricing page](https://cursor.com/pricing) for the most up-to-date student discounts or promotional events.*
+As of late August 2026, the most reliable public ways to reduce Cursor cost are:
+
+- **Free Hobby tier:** Cursor offers a no-cost entry tier for light use. It is the safest option for participants who only need Cursor for this workshop. Hobby tier includes:
+    - No credit card required
+    - Limited Agent requests
+    - Access to Composer
+- **Annual billing:** Yearly billing is 20% less expensive than monthly billing. Check the [pricing page](https://cursor.com/pricing) for the current price and terms before purchasing.
 
 ### Community and Resources
 
-* **Cursor Ambassador Program:** Passionate about Cursor? Apply to become an ambassador and help grow the community: [https://cursor.com/ambassadors](https://cursor.com/ambassadors)
-* **Community Forum:** The official place to report bugs, request features, and discuss workflows with other developers: [https://forum.cursor.com/](https://forum.cursor.com/)
+* **Cursor Ambassador Program:** Passionate about Cursor? Apply to become an ambassador and help grow the community: [https://cursor.com/ambassadors](https://cursor.com/ambassadors). Benefits listed include early feature access, personal credits, meetup funding, community Slack access, and merchandise.
+* **Community Forum:** The official community forum is [forum.cursor.com](https://forum.cursor.com/). It includes announcements, discussions, support, ideas, guides, showcases, meetups, and account/billing information. Use it to find known issues, share workflows, request features, and ask reproducible technical questions.
 
 ## Part 2: Practical Exercise - Building an MCP Server
 
@@ -257,6 +262,14 @@ During the live refactor of our `stocks_server.py`, practice these Cursor comman
 1. **Code Search (Ctrl/Cmd + Enter):** Ask Cursor "Where is the watchlist defined?" to instantly jump to the `WATCHLIST` variable.
 2. **Inline Editor (Ctrl/Cmd + K):** Highlight the `get_stock_price` function and prompt: *"Add error handling if the ticker is invalid."*
 3. **Composer (Ctrl/Cmd + I):** Prompt: *"Create a new file called `test_stocks.py` and write pytest functions for all the tools in `stocks_server.py`."*
+
+### Weak versus strong requests
+
+| Weak prompt | Better prompt |
+|---|---|
+| “Make this better.” | “Review `stocks_server.py` for duplication and error handling. Propose a plan with at most three changes. Do not edit files yet.” |
+| “Add validation.” | “In `get_stock_history`, reject `days < 1` and `days > 365` with a clear `ValueError`. Preserve the function’s return shape. Add focused tests.” |
+| “Fix it.” | “Reproduce the error shown below, identify the smallest root cause, propose a minimal patch, and tell me the exact command to verify it. Do not change unrelated files.” |
 
 ### Checklist: Avoiding Common AI Pitfalls
 
