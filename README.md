@@ -224,18 +224,23 @@ Start a small helper stub:
 def normalize_ticker(ticker: str) -> str:
 ```
 
+![0004.png](img/0004.png "Tab completiont")
+
 Accept or reject Tab suggestions only after checking that they meet the desired contract. A reasonable final form is:
 
 ```python
 def normalize_ticker(ticker: str) -> str:
-    """Return a normalized ticker symbol or raise ValueError for blank input."""
-    normalized = ticker.strip().upper()
-    if not normalized:
-        raise ValueError("ticker must not be blank")
-    return normalized
+    """Normalize a ticker symbol to a standard format."""
+    return ticker.upper()
 ```
 
-Then ask: What behavior is still unspecified? Expected answers include allowed characters, maximum length, and whether the helper should accept non-string values.
+Then ask:
+
+```text
+What behavior is still unspecified?
+```
+
+Expected answers may include allowed characters, maximum length, and whether the helper should accept non-string values.
 
 ## Part 3: Practical Exercise - Building an MCP Server
 
