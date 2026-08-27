@@ -16,6 +16,13 @@
     - [How to Update Cursor](#how-to-update-cursor)  
     - [Promotions, Trials, and Discounts](#promotions-trials-and-discounts)  
     - [Community and Resources](#community-and-resources)  
+- [**Part 2:** Fast Edits and Navigation](#part-2-fast-edits-and-navigation)  
+    - [When to Use Each Cursor Feature](#when-to-use-each-cursor-feature)
+    - [Prompt Templates](#prompt-templates)
+        - [Explore before changing](#explore-before-changing)
+        - [Plan a multi-file change](#plan-a-multi-file-change)
+        - [Implement a reviewed plan](#implement-a-reviewed-plan)
+        - [Diagnose a failure](#diagnose-a-failure)
 - [**Part 3:** Practical Exercise - Building an MCP Server](#part-3-practical-exercise---building-an-mcp-server)
     - [Understanding MCP](#understanding-mcp)  
     - [Building with FastMCP](#building-with-fastmcp)  
@@ -130,7 +137,7 @@ As of late August 2026, the most reliable public ways to reduce Cursor cost are:
 
 ## Part 2: Fast Edits and Navigation
 
-## When to Use Each Cursor Feature
+### When to Use Each Cursor Feature
 
 | Need | Suggested feature | Safe usage pattern |
 |---|---|---|
@@ -140,9 +147,9 @@ As of late August 2026, the most reliable public ways to reduce Cursor cost are:
 | Rename, rewrite, or add a few local lines | Inline editor | Select the exact code; make one small instruction |
 | Fill in a predictable line or local block | Tab completion | Accept only after reading; reject or edit incorrect suggestions |
 
-## Prompt Templates
+### Prompt Templates
 
-### Explore before changing
+#### Explore before changing
 
 ```text
 Read @stocks_server.py and @tests/test_stocks_server.py.
@@ -150,7 +157,7 @@ Explain the current data flow from MCP tool call to returned response.
 List assumptions and likely failure points. Do not edit files.
 ```
 
-### Plan a multi-file change
+#### Plan a multi-file change
 
 ```text
 We need to add ticker validation and tests.
@@ -164,7 +171,7 @@ Requirements:
 First, give a concise implementation plan, including files to change and verification commands. Do not make edits yet.
 ```
 
-### Implement a reviewed plan
+#### Implement a reviewed plan
 
 ```text
 Implement the approved plan.
@@ -172,7 +179,7 @@ Keep the diff minimal. Do not add dependencies.
 Afterward, summarize each changed file and give the exact test command to run.
 ```
 
-### Diagnose a failure
+#### Diagnose a failure
 
 ```text
 The command below fails:
@@ -182,6 +189,49 @@ The command below fails:
 Inspect the relevant code. Identify the most likely root cause and explain the evidence.
 Propose the smallest fix. Do not apply changes until I approve the plan.
 ```
+
+### Task 1: Navigate before prompting
+
+1. Open `stocks_server.py`.
+2. Use code search to find `get_stock_price`.
+3. Find all occurrences of `WATCHLIST`.
+4. Ask Cursor Chat:
+
+```text
+Using only the open file, explain which functions are MCP tools, which are resources, and which are prompts. Do not edit anything.
+```
+
+### Task 2: Inline editor for a narrow change
+
+Select a function docstring and invoke Cursor’s inline edit command. Ask:
+
+```text
+Rewrite this docstring in concise Google-style Python documentation.
+Do not modify code or behavior.
+```
+
+Review the proposed local change. Emphasize that the selection acts as a boundary.
+
+### Task 3: Tab completion with intent
+
+Start a small helper stub:
+
+```python
+def normalize_ticker(ticker: str) -> str:
+```
+
+Accept or reject Tab suggestions only after checking that they meet the desired contract. A reasonable final form is:
+
+```python
+def normalize_ticker(ticker: str) -> str:
+    """Return a normalized ticker symbol or raise ValueError for blank input."""
+    normalized = ticker.strip().upper()
+    if not normalized:
+        raise ValueError("ticker must not be blank")
+    return normalized
+```
+
+Then ask: What behavior is still unspecified? Expected answers include allowed characters, maximum length, and whether the helper should accept non-string values.
 
 ## Part 3: Practical Exercise - Building an MCP Server
 
