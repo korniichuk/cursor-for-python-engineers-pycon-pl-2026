@@ -51,32 +51,48 @@ No prior experience with Cursor, MCP, FastMCP, or AI-assisted coding is required
 
 ### What is Cursor?
 
-Cursor is an AI-first IDE built as a fork of VS Code. It integrates advanced Large Language Models (LLMs) directly into the editor, allowing developers to generate, edit, and debug code through natural language prompts and highly context-aware auto-completion.
+Cursor is an AI-first [IDE (Integrated Development Environment)](https://en.wikipedia.org/wiki/Integrated_development_environment) built as a fork of [VS Code](https://code.visualstudio.com/). It integrates advanced [Large Language Models (LLMs)](https://en.wikipedia.org/wiki/Large_language_model) directly into the code editor, allowing developers to generate, edit, and debug code through natural language prompts and highly context-aware auto-completion.
+
+For this workshop, think of Cursor as a **fast collaborator inside your editor**, not an autopilot. It is useful when you provide clear goals, relevant context, boundaries, and a way to verify the result.
+
 
 **Pros:**
 
-* **Familiar Interface:** Because it is a VS Code fork, all your favorite extensions, themes, and keybindings work out of the box.
-* **Deep Context:** Cursor understands your entire codebase, reading across multiple files to provide accurate suggestions.
-* **Agentic Capabilities:** Features like Composer can plan and execute complex, multi-file code changes.
+* ✅ **Familiar Interface**, because it is a [VS Code](https://code.visualstudio.com/) fork, all your favorite extensions, themes, and keybindings work out of the box.
+* ✅ Keeps coding, review, terminal work, and AI assistance in **one workspace**.
+* ✅ **Deep Context**. Cursor understands your entire codebase, reading across multiple files to provide accurate suggestions.
+* ✅ **Agentic Capabilities**. Features like Composer can plan and execute complex, multi-file code changes.
+* ✅ **Speeds up routine** edits, boilerplate, navigation, and first drafts.
+* ✅ **Useful** for explaining unfamiliar code and generating test cases.
+* ✅ **Helps beginners** turn intent into a concrete next step.
 
 **Cons:**
 
-* **Cloud Reliance:** Features require an active internet connection to communicate with the cloud-hosted LLMs.
-* **Cost:** While there is a free tier, heavy professional use requires a monthly subscription.
-* **Occasional Hallucinations:** Like all AI tools, it can sometimes suggest non-existent libraries or deprecated methods if not properly prompted.
+* ❌ **Cloud Reliance:** Features require an active internet connection to communicate with the cloud-hosted LLMs.
+* ❌ **Cost:** While there is a free tier, heavy professional use requires a monthly or yearly [subscription](https://cursor.com/pricing).
+* ❌ **Occasional Hallucinations:** Like all AI tools, it can sometimes confidently invent APIs, imports, behavior, or facts.
+* ❌ **You are responsible** for security, correctness, licensing, and data handling
+* ❌ **Generated tests can repeat** the same **misunderstanding** as the implementation
+* ❌ **Overreliance** can slow skill development and hide fundamentals
 
 ### Ownership
 
-Cursor is developed by **Anysphere**, an AI research startup backed by prominent investors including OpenAI Startup Fund and Andreessen Horowitz (a16z). SpaceX officially completed its $60 billion all-stock acquisition of Cursor (parent company Anysphere) on August 14, 2026 ([source](https://cursor.com/blog/joining-spacex)).
+Cursor was created by **Anysphere**, an AI research startup backed by prominent investors including OpenAI Startup Fund and Andreessen Horowitz (a16z). **SpaceX** officially completed its $60 billion all-stock acquisition of Cursor (parent company Anysphere) on August 14, 2026 [[source](https://cursor.com/blog/joining-spacex)].
 
 ### How to Download and Install Cursor
 
 Cursor is cross-platform. To install:
 
-1. Navigate to the official website at [cursor.com](https://cursor.com).
-2. Download the appropriate installer for your operating system (Windows `.exe`, macOS `.dmg`, or Linux `.AppImage`).
-3. Run the installer and follow the on-screen prompts.
-4. On first launch, you will be prompted to import your VS Code settings and extensions.
+1. Navigate to the official website at [cursor.com/download](https://cursor.com/download).
+2. Download the appropriate installer for your operating system (e.g., Windows `.exe`, macOS `.dmg`, or Linux).
+3. Open the downloaded file.
+4. Follow the install steps for your OS:
+    - **macOS**: Drag Cursor into your `Applications` folder,
+    - **Windows**: Run the installer and follow the on-screen prompts,
+    - **Linux**: Install via your package manager (`apt` or `dnf`) if available, or extract the `AppImage/archive` and run it.
+4. Open `Cursor` from your applications menu or desktop
+5. Sign in with your [Cursor account](https://cursor.com/dashboard) when prompted
+6. On first launch, you will be prompted to optionally import your [VS Code](https://code.visualstudio.com/) settings and extensions.
 
 ### How to Update Cursor IDE
 
