@@ -8,7 +8,7 @@
 ## Table of contents
 
 - [Workshop Overview](#workshop-overview)  
-- [Participant prerequisites](#participant-prerequisites) 
+- [Participant Prerequisites](#participant-prerequisites) 
 - [**Part 1:** Introduction to Cursor](#part-1-introduction-to-cursor)  
     - [What is Cursor?](#what-is-cursor)  
     - [Ownership](#ownership)  
@@ -16,12 +16,12 @@
     - [How to Update Cursor](#how-to-update-cursor)  
     - [Promotions, Trials, and Discounts](#promotions-trials-and-discounts)  
     - [Community and Resources](#community-and-resources)  
-- [**Part 2:** Practical Exercise - Building an MCP Server](#part-2-practical-exercise---building-an-mcp-server)
+- [**Part 3:** Practical Exercise - Building an MCP Server](#part-3-practical-exercise---building-an-mcp-server)
     - [Understanding MCP](#understanding-mcp)  
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
-- [**Part 3:** Cursor Workflows & Best Practices](#part-3-cursor-workflows--best-practices)  
-    - [Weak versus strong requests](#weak-versus-strong-requests)
+- [**Part 4:** Cursor Workflows & Best Practices](#part-4-cursor-workflows--best-practices)  
+    - [Weak vs Strong Prompts](#weak-vs-strong-prompts)
     - [Checklist: Avoiding Common AI Pitfalls](#checklist-avoiding-common-ai-pitfalls)
 
 ## Workshop Overview
@@ -35,7 +35,7 @@ This workshop teaches a repeatable, safe workflow for using Cursor to plan, impl
 * Navigating quickly with code search.
 * Speeding up everyday edits with inline completion and the inline editor.
 
-## Participant prerequisites
+## Participant Prerequisites
 
 Participants should bring:
 
@@ -128,7 +128,62 @@ As of late August 2026, the most reliable public ways to reduce Cursor cost are:
 * **Cursor Ambassador Program:** Passionate about Cursor? Apply to become an ambassador and help grow the community: [https://cursor.com/ambassadors](https://cursor.com/ambassadors). Benefits listed include early feature access, personal credits, meetup funding, community Slack access, and merchandise.
 * **Community Forum:** The official community forum is [forum.cursor.com](https://forum.cursor.com/). It includes announcements, discussions, support, ideas, guides, showcases, meetups, and account/billing information. Use it to find known issues, share workflows, request features, and ask reproducible technical questions.
 
-## Part 2: Practical Exercise - Building an MCP Server
+## Part 2: Fast Edits and Navigation
+
+## When to Use Each Cursor Feature
+
+| Need | Suggested feature | Safe usage pattern |
+|---|---|---|
+| Locate a symbol, filename, string, or call site | Code search | Search first; open and read results before prompting |
+| Ask about existing code or request a focused diff | Chat + Apply | Attach/mention specific files or selections; review diff before applying |
+| Coordinate an intentionally scoped change across several files | Composer | Start with a plan, define file boundaries, then inspect the entire diff |
+| Rename, rewrite, or add a few local lines | Inline editor | Select the exact code; make one small instruction |
+| Fill in a predictable line or local block | Tab completion | Accept only after reading; reject or edit incorrect suggestions |
+
+## Prompt Templates
+
+### Explore before changing
+
+```text
+Read @stocks_server.py and @tests/test_stocks_server.py.
+Explain the current data flow from MCP tool call to returned response.
+List assumptions and likely failure points. Do not edit files.
+```
+
+### Plan a multi-file change
+
+```text
+We need to add ticker validation and tests.
+
+Requirements:
+- Accept uppercase and lowercase ticker input.
+- Reject blank values and characters other than letters, digits, dots, and hyphens.
+- Keep public tool names and response keys unchanged.
+- Add tests for valid and invalid inputs.
+
+First, give a concise implementation plan, including files to change and verification commands. Do not make edits yet.
+```
+
+### Implement a reviewed plan
+
+```text
+Implement the approved plan.
+Keep the diff minimal. Do not add dependencies.
+Afterward, summarize each changed file and give the exact test command to run.
+```
+
+### Diagnose a failure
+
+```text
+The command below fails:
+
+<PASTE TRACEBACK OR COMMAND OUTPUT>
+
+Inspect the relevant code. Identify the most likely root cause and explain the evidence.
+Propose the smallest fix. Do not apply changes until I approve the plan.
+```
+
+## Part 3: Practical Exercise - Building an MCP Server
 
 For our hands-on practice, we will build a Model Context Protocol (MCP) server using Python. This section utilizes concepts from the presentation "ruslan_korniichuk_-_mcp_20260720.pdf".
 
@@ -255,7 +310,7 @@ You can inspect the server locally using the MCP Inspector shipped with FastMCP.
 
 * Inside the Inspector, you can list your tools, call `get_stock_price` with `ticker="AAPL"`, and view the JSON response.
 
-## Part 3: Cursor Workflows & Best Practices
+## Part 4: Cursor Workflows & Best Practices
 
 During the live refactor of our `stocks_server.py`, practice these Cursor commands:
 
@@ -263,13 +318,13 @@ During the live refactor of our `stocks_server.py`, practice these Cursor comman
 2. **Inline Editor (Ctrl/Cmd + K):** Highlight the `get_stock_price` function and prompt: *"Add error handling if the ticker is invalid."*
 3. **Composer (Ctrl/Cmd + I):** Prompt: *"Create a new file called `test_stocks.py` and write pytest functions for all the tools in `stocks_server.py`."*
 
-### Weak versus strong requests
+### Weak vs Strong Prompts
 
 | Weak prompt | Better prompt |
 |---|---|
-| “Make this better.” | “Review `stocks_server.py` for duplication and error handling. Propose a plan with at most three changes. Do not edit files yet.” |
-| “Add validation.” | “In `get_stock_history`, reject `days < 1` and `days > 365` with a clear `ValueError`. Preserve the function’s return shape. Add focused tests.” |
-| “Fix it.” | “Reproduce the error shown below, identify the smallest root cause, propose a minimal patch, and tell me the exact command to verify it. Do not change unrelated files.” |
+| "Make this better." | "Review `stocks_server.py` for duplication and error handling. Propose a plan with at most three changes. Do not edit files yet." |
+| "Add validation." | "In `get_stock_history`, reject `days < 1` and `days > 365` with a clear `ValueError`. Preserve the function's return shape. Add focused tests." |
+| "Fix it." | "Reproduce the error shown below, identify the smallest root cause, propose a minimal patch, and tell me the exact command to verify it. Do not change unrelated files." |
 
 ### Checklist: Avoiding Common AI Pitfalls
 
