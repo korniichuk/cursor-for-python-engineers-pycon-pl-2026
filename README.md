@@ -25,6 +25,7 @@
         - [Diagnose a failure](#diagnose-a-failure)
 - [**Part 3:** Practical Exercise - Building an MCP Server](#part-3-practical-exercise---building-an-mcp-server)
     - [Understanding MCP](#understanding-mcp)  
+        - [The Three Primitives of MCP](#the-three-primitives-of-mcp)
     - [Building with FastMCP](#building-with-fastmcp)  
     - [Testing the Server](#testing-the-server)  
 - [**Part 4:** Cursor Workflows & Best Practices](#part-4-cursor-workflows--best-practices)  
@@ -230,7 +231,7 @@ Accept or reject Tab suggestions only after checking that they meet the desired 
 
 ```python
 def normalize_ticker(ticker: str) -> str:
-    """Normalize a ticker symbol to a standard format."""
+    """Normalize the ticker symbol to uppercase."""
     return ticker.upper()
 ```
 
@@ -244,30 +245,20 @@ Expected answers may include allowed characters, maximum length, and whether the
 
 ## Part 3: Practical Exercise - Building an MCP Server
 
-For our hands-on practice, we will build a Model Context Protocol (MCP) server using Python. This section utilizes concepts from the presentation "ruslan_korniichuk_-_mcp_20260720.pdf".
+For our hands-on practice, we will build a Model Context Protocol (MCP) server using Python.
 
 ### Understanding MCP
 
 * The Model Context Protocol (MCP) acts as a universal adapter, described as a "USB-C port for AI".
-
-
 * It was created by Anthropic and donated to the Linux Foundation in December 2025.
+* MCP connects AI applications (e.g., Cursor, Google Antigravity) to data sources, tools, and workflows.
+* The architecture consists of an MCP Host (the AI application), an MCP Client (maintains the connection), and an MCP Server (which provides context to the clients).
 
+#### The Three Primitives of MCP
 
-* MCP connects AI applications (like Claude or ChatGPT) to data sources, tools, and workflows.
-
-
-* The architecture consists of an MCP Host (the AI application), an MCP Client (which maintains the connection), and an MCP Server (which provides context to the clients).
-
-**The Three Primitives of MCP:**
-
-* **Resources:** Read-only context, such as file contents or database records ("Here is some data").
-
-
-* **Prompts:** Reusable templates for structuring LLM interactions ("Here is how to ask").
-
-
-* **Tools:** Executable functions like API calls or database queries ("Take this action").
+* **Resources:** "Here is some data." Read-only context (e.g., file contents, database records, API responses).
+* **Prompts:** "Here is how to ask." Reusable templates that help structure interactions with language models (e.g., system prompts, few-shot examples).
+* **Tools:** "Take this action." Executable functions (e.g., API calls, Bash commands, file operations, database queries).
 
 ### Building with FastMCP
 
